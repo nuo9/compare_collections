@@ -18,6 +18,4 @@ hs_err_pid*
 
 .idea/
 compare_collections.iml
-pom.xml
-src/
 target/

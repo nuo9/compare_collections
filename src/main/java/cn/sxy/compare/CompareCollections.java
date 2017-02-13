@@ -45,7 +45,7 @@ public class CompareCollections<PK, T> {
                 addMap.put(pk, t);
             }
         });
-        return addMap;
+        return new HashMap<>(addMap);
     }
 
     public Map<PK, T> getSubMap() {
@@ -55,7 +55,7 @@ public class CompareCollections<PK, T> {
                 subMap.put(pk, v);
             }
         });
-        return subMap;
+        return new HashMap<>(subMap);
     }
 
     // T[0] 是 before， T[1] 是 after
@@ -65,11 +65,13 @@ public class CompareCollections<PK, T> {
             T beforeV = before.get(pk);
             if (beforeV != null) {
                 if (!beforeV.equals(afterV)) {
-                    updateMap.put(pk, (T[]) new Object[]{beforeV, afterV});
+                    @SuppressWarnings("unchecked")
+                    T[] objs = (T[]) new Object[]{beforeV, afterV};
+                    updateMap.put(pk, objs);
                 }
             }
         });
-        return updateMap;
+        return new HashMap<>(updateMap);
     }
 
     public Map<PK, T> getBefore() {
