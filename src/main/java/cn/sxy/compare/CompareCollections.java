@@ -76,12 +76,12 @@ public class CompareCollections<PK, T> {
         return new HashMap<>(updateMap);
     }
 
-    public Map<PK, T> getBefore() {
-        return before;
+    public HashMap<PK, T> getBefore() {
+        return new HashMap<>(before);
     }
 
-    public Map<PK, T> getAfter() {
-        return after;
+    public HashMap<PK, T> getAfter() {
+        return new HashMap<>(after);
     }
 
 }
