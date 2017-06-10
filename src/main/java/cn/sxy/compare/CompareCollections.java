@@ -9,32 +9,32 @@ import static java.lang.Math.min;
 // PK是对象的主键， T是对象
 public class CompareCollections<PK, T> {
 
-    private HashMap<PK, T> before;
-    private HashMap<PK, T> after;
+    private Map<PK, T> before;
+    private Map<PK, T> after;
 
     private CompareCollections() {
     }
 
     public static <PK, T> CompareCollections<PK, T> create(Map<PK, T> before, Map<PK, T> after) {
         CompareCollections<PK, T> c = new CompareCollections<>();
-        c.before = new HashMap<>(before);
-        c.after = new HashMap<>(after);
+        c.before = before;
+        c.after = after;
         return c;
     }
 
     public static <T> CompareCollections<T, T> create(Collection<T> before, Collection<T> after)
             throws IllegalStateException {
         CompareCollections<T, T> c = new CompareCollections<>();
-        c.before = (HashMap<T, T>) before.stream().collect(Collectors.toMap(e -> e, e -> e));
-        c.after = (HashMap<T, T>) after.stream().collect(Collectors.toMap(e -> e, e -> e));
+        c.before = before.stream().collect(Collectors.toMap(e -> e, e -> e));
+        c.after = after.stream().collect(Collectors.toMap(e -> e, e -> e));
         return c;
     }
 
     public static <PK, T> CompareCollections<PK, T> create(Collection<T> before, Collection<T> after, Function<T, PK> getPK)
             throws IllegalStateException {
         CompareCollections<PK, T> c = new CompareCollections<>();
-        c.before = (HashMap<PK, T>) before.stream().collect(Collectors.toMap(getPK, e -> e));
-        c.after = (HashMap<PK, T>) after.stream().collect(Collectors.toMap(getPK, e -> e));
+        c.before = before.stream().collect(Collectors.toMap(getPK, e -> e));
+        c.after = after.stream().collect(Collectors.toMap(getPK, e -> e));
         return c;
     }
 
@@ -59,7 +59,6 @@ public class CompareCollections<PK, T> {
     }
 
     // List<T>[0] 是 before， List<T>[1] 是 after
-    @Deprecated
     public HashMap<PK, List<T>> getUpdateMap() {
         HashMap<PK, List<T>> updateMap = new HashMap<>(min(before.size(), after.size()));
         after.forEach((pk, afterV) -> {
@@ -91,11 +90,11 @@ public class CompareCollections<PK, T> {
         return updateMap;
     }
 
-    public HashMap<PK, T> getBefore() {
+    public Map<PK, T> getBefore() {
         return before;
     }
 
-    public HashMap<PK, T> getAfter() {
+    public Map<PK, T> getAfter() {
         return after;
     }
 
