@@ -14,6 +14,10 @@ public class CompareCollections<PK, T> {
     private Map<PK, T> before;
     private Map<PK, T> after;
 
+    private HashMap<PK, T> addMap;
+    private HashMap<PK, T> subMap;
+    private HashMap<PK, Pair<T>> updateMap;
+
     private CompareCollections() {
     }
 
@@ -41,6 +45,14 @@ public class CompareCollections<PK, T> {
     }
 
     public HashMap<PK, T> getAddMap() {
+        if (addMap == null) {
+            addMap = calculateAddMap();
+        }
+
+        return addMap;
+    }
+
+    private HashMap<PK, T> calculateAddMap() {
         HashMap<PK, T> addMap = new HashMap<>(after.size());
         after.forEach((pk, t) -> {
             if (!before.containsKey(pk)) {
@@ -51,6 +63,14 @@ public class CompareCollections<PK, T> {
     }
 
     public HashMap<PK, T> getSubMap() {
+        if (subMap == null) {
+            subMap = calculateSubMap();
+        }
+
+        return subMap;
+    }
+
+    private HashMap<PK, T> calculateSubMap() {
         HashMap<PK, T> subMap = new HashMap<>(before.size());
         before.forEach((pk, v) -> {
             if (!after.containsKey(pk)) {
@@ -61,6 +81,14 @@ public class CompareCollections<PK, T> {
     }
 
     public HashMap<PK, Pair<T>> getUpdateMap() {
+        if (updateMap == null) {
+            updateMap = calculateUpdateMap();
+        }
+
+        return updateMap;
+    }
+
+    private HashMap<PK, Pair<T>> calculateUpdateMap() {
         HashMap<PK, Pair<T>> updateMap = new HashMap<>(min(before.size(), after.size()));
         after.forEach((pk, afterV) -> {
             T beforeV = before.get(pk);
