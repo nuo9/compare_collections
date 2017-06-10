@@ -39,28 +39,29 @@ public class CompareCollections<PK, T> {
     }
 
     public HashMap<PK, T> getAddMap() {
-        Map<PK, T> addMap = new HashMap<>(after.size());
+        HashMap<PK, T> addMap = new HashMap<>(after.size());
         after.forEach((pk, t) -> {
             if (!before.containsKey(pk)) {
                 addMap.put(pk, t);
             }
         });
-        return new HashMap<>(addMap);
+        return addMap;
     }
 
     public HashMap<PK, T> getSubMap() {
-        Map<PK, T> subMap = new HashMap<>(before.size());
+        HashMap<PK, T> subMap = new HashMap<>(before.size());
         before.forEach((pk, v) -> {
             if (!after.containsKey(pk)) {
                 subMap.put(pk, v);
             }
         });
-        return new HashMap<>(subMap);
+        return subMap;
     }
 
     // List<T>[0] 是 before， List<T>[1] 是 after
+    @Deprecated
     public HashMap<PK, List<T>> getUpdateMap() {
-        Map<PK, List<T>> updateMap = new HashMap<>(min(before.size(), after.size()));
+        HashMap<PK, List<T>> updateMap = new HashMap<>(min(before.size(), after.size()));
         after.forEach((pk, afterV) -> {
             T beforeV = before.get(pk);
             if (beforeV != null) {
@@ -73,15 +74,29 @@ public class CompareCollections<PK, T> {
                 }
             }
         });
-        return new HashMap<>(updateMap);
+        return updateMap;
+    }
+
+    // T 是 after
+    public HashMap<PK, T> getUpdatedMap() {
+        HashMap<PK, T> updateMap = new HashMap<>(min(before.size(), after.size()));
+        after.forEach((pk, afterV) -> {
+            T beforeV = before.get(pk);
+            if (beforeV != null) {
+                if (!beforeV.equals(afterV)) {
+                    updateMap.put(pk, afterV);
+                }
+            }
+        });
+        return updateMap;
     }
 
     public HashMap<PK, T> getBefore() {
-        return new HashMap<>(before);
+        return before;
     }
 
     public HashMap<PK, T> getAfter() {
-        return new HashMap<>(after);
+        return after;
     }
 
 }
