@@ -22,6 +22,7 @@ Compare the contents of two collections, calculating add, sub and update members
     cc.getAddMap();
     cc.getSubMap();
     cc.getUpdateMap();
+    cc.getUpdatedMap();
 ##### Warning: 
 Approach 2 and 3 may cause java.lang.IllegalStateException: Duplicate key.  
 This exception is thrown by Collectors.toMap() method.
