@@ -1,6 +1,8 @@
 package cn.sxy.compare;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -58,32 +60,14 @@ public class CompareCollections<PK, T> {
         return subMap;
     }
 
-    // List<T>[0] 是 before， List<T>[1] 是 after
-    public HashMap<PK, List<T>> getUpdateMap() {
-        HashMap<PK, List<T>> updateMap = new HashMap<>(min(before.size(), after.size()));
+    public HashMap<PK, Pair<T>> getUpdateMap() {
+        HashMap<PK, Pair<T>> updateMap = new HashMap<>(min(before.size(), after.size()));
         after.forEach((pk, afterV) -> {
             T beforeV = before.get(pk);
             if (beforeV != null) {
                 if (!beforeV.equals(afterV)) {
-                    ArrayList<T> list = new ArrayList<>(2);
-                    list.add(beforeV);
-                    list.add(afterV);
-
-                    updateMap.put(pk, list);
-                }
-            }
-        });
-        return updateMap;
-    }
-
-    // T 是 after
-    public HashMap<PK, T> getUpdatedMap() {
-        HashMap<PK, T> updateMap = new HashMap<>(min(before.size(), after.size()));
-        after.forEach((pk, afterV) -> {
-            T beforeV = before.get(pk);
-            if (beforeV != null) {
-                if (!beforeV.equals(afterV)) {
-                    updateMap.put(pk, afterV);
+                    Pair<T> pair = new Pair<>(beforeV, afterV);
+                    updateMap.put(pk, pair);
                 }
             }
         });
