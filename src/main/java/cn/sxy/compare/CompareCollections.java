@@ -17,6 +17,7 @@ public class CompareCollections<PK, T> {
     private HashMap<PK, T> addMap;
     private HashMap<PK, T> subMap;
     private HashMap<PK, Pair<T>> updateMap;
+    private HashMap<PK, T> updatedMap;
 
     private CompareCollections() {
     }
@@ -96,6 +97,27 @@ public class CompareCollections<PK, T> {
                 if (!beforeV.equals(afterV)) {
                     Pair<T> pair = new Pair<>(beforeV, afterV);
                     updateMap.put(pk, pair);
+                }
+            }
+        });
+        return updateMap;
+    }
+
+    public HashMap<PK, T> getUpdatedMap() {
+        if (updatedMap == null) {
+            updatedMap = calculateUpdatedMap();
+        }
+
+        return updatedMap;
+    }
+
+    private HashMap<PK, T> calculateUpdatedMap() {
+        HashMap<PK, T> updateMap = new HashMap<>(min(before.size(), after.size()));
+        after.forEach((pk, afterV) -> {
+            T beforeV = before.get(pk);
+            if (beforeV != null) {
+                if (!beforeV.equals(afterV)) {
+                    updateMap.put(pk, afterV);
                 }
             }
         });
