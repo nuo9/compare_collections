@@ -1,5 +1,8 @@
 package cn.sxy.compare;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Pair<T> {
 
     private final T before;
@@ -16,6 +19,10 @@ public class Pair<T> {
 
     public T getAfter() {
         return after;
+    }
+
+    public List<T> toList() {
+        return Arrays.asList(before, after);
     }
 
 }
