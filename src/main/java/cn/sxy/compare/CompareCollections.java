@@ -132,5 +132,16 @@ public class CompareCollections<PK, T> {
         return after;
     }
 
+    public boolean isCompletelyEquals() {
+        if (!getAddMap().isEmpty())
+            return false;
+        if (!getSubMap().isEmpty())
+            return false;
+        if (!getUpdatedMap().isEmpty())
+            return false;
+
+        return true;
+    }
+
 }
 
